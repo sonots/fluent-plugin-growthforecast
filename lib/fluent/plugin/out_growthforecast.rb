@@ -12,6 +12,8 @@ class Fluent::GrowthForecastOutput < Fluent::Output
   config_param :service, :string, :default => nil
   config_param :section, :string, :default => nil
 
+  config_param :amplifier, :float, :default => 1.0
+
   config_param :ssl, :bool, :default => false
   config_param :verify_ssl, :bool, :default => false
 
@@ -134,7 +136,7 @@ class Fluent::GrowthForecastOutput < Fluent::Output
     if @keepalive
       req['Connection'] = 'Keep-Alive'
     end
-    req.set_form_data({'number' => value.to_i, 'mode' => @mode.to_s})
+    req.set_form_data({'number' => (value.to_f * @amplifier).to_i, 'mode' => @mode.to_s})
     req
   end
 
